@@ -5,23 +5,23 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "npx nodemon index.js"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jditzco/Tp_personajes_casteletti_Itzcovich.git"
+    "url": "git+https://github.com/fcastelletti13/tp-personajes.git"
   },
-  "author": "",
+  "author": "Franco Matias Castelletti Brilli",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/jditzco/Tp_personajes_casteletti_Itzcovich/issues"
+    "url": "https://github.com/fcastelletti13/tp-personajes/issues"
   },
-  "homepage": "https://github.com/jditzco/Tp_personajes_casteletti_Itzcovich#readme",
+  "homepage": "https://github.com/fcastelletti13/tp-personajes#readme",
   "dependencies": {
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "mssql": "^9.1.1",
-    "nodemon": "^2.0.22",
-    "winston": "^3.8.2"
+    "nodemon": "^2.0.22"
   }
 }

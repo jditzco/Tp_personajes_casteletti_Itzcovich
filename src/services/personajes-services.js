@@ -1,5 +1,5 @@
-import sql from 'mssql';
 import config from '../../dbconfig-env.js';
+import sql from 'mssql';
 
 class PersonajesService {
     getAll = async () => {
@@ -7,10 +7,42 @@ class PersonajesService {
         console.log('Estoy en: PersonajesService.getAll()');
         try {
             let pool = await sql.connect(config);
-            let result = await pool.request().query("SELECT * from Personajes");
+            let result = await pool.request().query("SELECT IdPersonaje, nombre, imagen from Personaje");
             returnArray = result.recordsets[0];
         }
         catch (error) {
+            console.log(error);
+        }
+        return returnArray;
+    }
+
+    getPersonajesPORnombre = async (Nombre) => {
+        let returnEntity = null;
+        console.log('Estoy en: PersonajesService.getPersonajesPORnombre(Nombre)');
+        try {
+            let pool   = await sql.connect(config);
+            let result = await pool.request()
+            .input('pNombre', sql.VarChar(150), Nombre)
+            .query('SELECT * FROM Personaje WHERE Nombre = @pNombre');
+            returnEntity = result.recordsets[0][0];
+        } catch (error) {
+            console.log(error);
+        }
+        return returnEntity;
+    }
+
+    getPersonajesPORedad = async (Edad) => {
+        let returnEntity = null;
+        let returnArray = null;
+        console.log('Estoy en: PersonajesService.getPersonajesPORedad(Edad)');
+        try {
+            let pool   = await sql.connect(config);
+            let result = await pool.request()
+            .input('pEdad', sql.Int, Edad)
+            .query('SELECT * FROM Personaje WHERE Edad = @pEdad');
+            returnEntity = result.recordsets[0][0];
+            returnArray = result.recordsets[0];
+        } catch (error) {
             console.log(error);
         }
         return returnArray;
@@ -23,7 +55,7 @@ class PersonajesService {
             let pool = await sql.connect(config);
             let result = await pool.request()
             .input('pId', sql.Int, id)
-            .query('SELECT * FROM Personajes WHERE id = @pId');
+            .query('SELECT * FROM Personaje WHERE IdPersonaje = @pId');
             returnEntity = result.recordsets[0][0];
         } catch (error) {
             console.log(error);
@@ -37,8 +69,8 @@ class PersonajesService {
         try {
             let pool = await sql.connect(config);
             let result = await pool.request()
-            .query(`INSERT INTO Personajes (Nombre, Imagen, Edad, Peso, Historia, Asociadas)
-            VALUES ('${personaje.Nombre}', '${personaje.Imagen}', ${personaje.Edad}, ${personaje.Peso}, '${personaje.Historia}', '${personaje.Asociadas}')`);
+            .query(`INSERT INTO Personaje (Id, Nombre, Imagen, Edad, Peso, Historia, peliserie)
+            VALUES ('${personaje.Id}', '${personaje.Nombre}', '${personaje.Imagen}', ${personaje.Edad}, ${personaje.Peso}, '${personaje.Historia}', '${personaje.Asociadas}')`);
             rowsAffected = result.rowsAffected;
         } catch (error) {
             console.log(error);
@@ -53,14 +85,14 @@ class PersonajesService {
         try {
             let pool = await sql.connect(config);
             let result = await pool.request()
-                .query(`UPDATE Personajes SET 
+                .query(`UPDATE Personaje SET 
                 Nombre = '${personaje.Nombre}',
                 Imagen = '${personaje.Imagen}',
                 Edad = ${personaje.Edad},
                 Peso = ${personaje.Peso},
                 Historia = '${personaje.Historia}',
-                Asociadas = '${personaje.Asociadas}'
-                WHERE IDd = ${personaje.id}`);
+                peliserie = '${personaje.Asociadas}'
+                WHERE IdPersonaje = ${personaje.id}`);
             rowsAffected = result.rowsAffected;
         } catch (error) {
             console.log(error);
@@ -75,7 +107,7 @@ class PersonajesService {
             let pool = await sql.connect(config);
             let result = await pool.request()
             .input('pId', sql.Int, id)
-            .query('DELETE FROM Personajes WHERE id = @pId');
+            .query('DELETE FROM Personaje WHERE id = @pId');
             rowsAffected = result.rowsAffected;
         } catch (error) {
             console.log(error);
@@ -85,4 +117,3 @@ class PersonajesService {
 }
 
 export default PersonajesService;
-
