@@ -6,23 +6,21 @@ console.clear()
 const app = express()
 const port = 3001
 app.listen(port, () => console.log(`Example app listening on port ${port}`))
-
+let servicePelicula = new PeliculasService()
+let servicePersonaje = new PersonajesService()
 
 app.get('/', async(req, res) => {
     res.send('documentación: /personajes /peliculas')
 })
 
 app.get('/personajes', async(req, res) => {
-    let service = new PersonajesService()
-    res.send(await service.getAll())
+    res.send(await servicePersonaje.getAll())
 })
 
 app.get('/peliculas', async(req, res) => {
-    let service = new PeliculasService()
-    res.send(await service.getAll())
+    res.send(await servicePelicula.getAll())
 })
 
 app.get('/peliculas/:id', async(req, res) => {
-    let service = new PeliculasService()
-    res.send(await service.getById(req.params.id))
+    res.send(await servicePelicula.getById(req.params.id))
 })
